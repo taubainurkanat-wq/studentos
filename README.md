@@ -8,6 +8,8 @@ A thoughtfully designed, full-stack student workspace for courses, assignments, 
 
 **FastAPI · Python · SQLite · JavaScript · HTML · CSS**
 
+### [Launch the live demo](https://studentos-demo.onrender.com) · [View source on GitHub](https://github.com/taubainurkanat-wq/studentos)
+
 [Features](#features) · [Quick start](#quick-start) · [Live demo deployment](#live-demo-deployment) · [API](#api) · [Roadmap](#roadmap)
 
 </div>
@@ -75,13 +77,15 @@ py -m venv .venv
 
 ## Live demo deployment
 
+**Live demo:** [https://studentos-demo.onrender.com](https://studentos-demo.onrender.com)
+
 This repository contains a Render Blueprint: [`render.yaml`](render.yaml).
 
 1. Sign in to [Render](https://dashboard.render.com/) and connect your GitHub account.
 2. Choose **New → Blueprint** and select `taubainurkanat-wq/studentos`.
 3. Review the Blueprint; it specifies a **Free** Python Web Service named `studentos-demo`.
-4. Deploy, then wait for Render to show **Live** and copy the real `https://...onrender.com` URL.
-5. Open the URL and choose **Launch interactive demo**. Add that *verified live URL* to the top of this README and to your GitHub profile.
+4. Open the deployed app at **[studentos-demo.onrender.com](https://studentos-demo.onrender.com)**.
+5. Select **Launch interactive demo** to try the application without creating an account.
 
 The Blueprint uses `STUDENTOS_PUBLIC_DEMO=1`, which disables real user registration and sign-in, but creates isolated, temporary demo workspaces for visitors. The local version still supports registration and login. **The free Render filesystem is ephemeral**: sample tasks/grades may disappear after idle shutdown, restart, or redeployment. Do not enter real passwords, grades, or confidential information. Use durable storage and security controls before offering real accounts to the public.
 

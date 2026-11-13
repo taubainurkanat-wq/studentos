@@ -8,7 +8,7 @@ A thoughtfully designed, full-stack student workspace for courses, assignments, 
 
 **FastAPI · Python · SQLite · JavaScript · HTML · CSS**
 
-[Features](#features) · [Quick start](#quick-start) · [API](#api) · [Roadmap](#roadmap)
+[Features](#features) · [Quick start](#quick-start) · [Live demo deployment](#live-demo-deployment) · [API](#api) · [Roadmap](#roadmap)
 
 </div>
 
@@ -73,6 +73,18 @@ py -m venv .venv
 .venv\Scripts\python.exe -m uvicorn app:app --reload
 ```
 
+## Live demo deployment
+
+This repository contains a Render Blueprint: [`render.yaml`](render.yaml).
+
+1. Sign in to [Render](https://dashboard.render.com/) and connect your GitHub account.
+2. Choose **New → Blueprint** and select `taubainurkanat-wq/studentos`.
+3. Review the Blueprint; it specifies a **Free** Python Web Service named `studentos-demo`.
+4. Deploy, then wait for Render to show **Live** and copy the real `https://...onrender.com` URL.
+5. Open the URL and choose **Launch interactive demo**. Add that *verified live URL* to the top of this README and to your GitHub profile.
+
+The Blueprint uses `STUDENTOS_PUBLIC_DEMO=1`, which disables real user registration and sign-in, but creates isolated, temporary demo workspaces for visitors. The local version still supports registration and login. **The free Render filesystem is ephemeral**: sample tasks/grades may disappear after idle shutdown, restart, or redeployment. Do not enter real passwords, grades, or confidential information. Use durable storage and security controls before offering real accounts to the public.
+
 ## Project structure
 
 ```text
@@ -90,6 +102,7 @@ StudentOS/
 │   └── mobile.png
 ├── .github/workflows/     # Automated GitHub Actions tests
 ├── requirements.txt
+├── render.yaml             # Public Render demo deployment
 ├── start.bat              # One-click Windows launcher
 ├── start.sh               # macOS/Linux launcher
 └── README.md
@@ -148,7 +161,8 @@ StudentOS is a portfolio **MVP**, designed to run locally. Passwords use salted 
 - [x] API tests and GitHub Actions CI
 - [ ] Add weighted assignments and configurable university grade scales
 - [ ] Calendar sync and notifications
-- [ ] Deployment with HTTPS
+- [x] Render Blueprint for a disposable public demo
+- [ ] Verify public HTTPS deployment URL on Render
 - [ ] Accessibility and end-to-end browser tests in CI
 
 ---

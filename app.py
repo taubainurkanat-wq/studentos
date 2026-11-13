@@ -23,6 +23,7 @@ from pydantic import BaseModel, Field, field_validator
 
 ROOT = Path(__file__).resolve().parent
 DB_PATH = Path(os.environ.get('STUDENTOS_DB', str(ROOT / 'studentos.db')))
+PUBLIC_DEMO = os.environ.get('STUDENTOS_PUBLIC_DEMO', '').strip().lower() in ('1', 'true', 'yes')
 app = FastAPI(title='StudentOS API', version='1.0.0', docs_url='/api/docs', redoc_url=None)
 
 
@@ -275,6 +276,8 @@ def insert(conn, table, user_id, data):
 
 @app.post('/api/auth/register', status_code=201)
 def register(info: RegisterData):
+    if PUBLIC_DEMO:
+        raise HTTPException(403, 'Registration is disabled in the public demo. Try Explore demo workspace.')
     with db() as conn:
         try:
             cur = conn.execute('INSERT INTO users(name,email,password_hash,created_at) VALUES (?,?,?,?)',
@@ -287,6 +290,8 @@ def register(info: RegisterData):
 
 @app.post('/api/auth/login')
 def login(info: AuthData):
+    if PUBLIC_DEMO:
+        raise HTTPException(403, 'Sign-in is disabled in the public demo. Try Explore demo workspace.')
     with db() as conn:
         user = conn.execute('SELECT * FROM users WHERE email=?', (info.email,)).fetchone()
         if not user or not pwd_valid(info.password, user['password_hash']):
@@ -302,8 +307,18 @@ def demo():
     email = f'demo-{uuid.uuid4().hex[:16]}@studentos.local'
     ts = utcnow().isoformat()
     with db() as conn:
+        if PUBLIC_DEMO:
+            # Keep ephemeral accounts bounded, and delete their dependent records via foreign keys.
+            oldest = (utcnow() - timedelta(hours=1)).isoformat()
+            conn.execute('DELETE FROM users WHERE email LIKE ? AND created_at < ?',
+                         ('demo-%@studentos.local', oldest))
+            active = conn.execute('SELECT count(*) FROM users WHERE email LIKE ?',
+                                  ('demo-%@studentos.local',)).fetchone()[0]
+            if active >= 120:
+                raise HTTPException(429, 'Demo is busy. Please try again later.')
+        demo_password = 'DEMO_LOGIN_DISABLED' if PUBLIC_DEMO else pwd_hash(secrets.token_urlsafe(18))
         cur = conn.execute('INSERT INTO users(name,email,password_hash,created_at) VALUES (?,?,?,?)',
-                           (name, email, pwd_hash(secrets.token_urlsafe(18)), ts))
+                           (name, email, demo_password, ts))
         user_id = cur.lastrowid
         courses = [
             ('Data Structures', 'CS 201', 'Dr. Carter', 4, 91, 'violet'),
@@ -448,6 +463,11 @@ def delete_schedule(item_id: int, user: User):
         record(conn, 'schedule', item_id, user['id'])
         conn.execute('DELETE FROM schedule WHERE id=? AND user_id=?', (item_id, user['id']))
     return {'ok': True}
+
+
+@app.get('/api/config')
+def config():
+    return {'public_demo': PUBLIC_DEMO}
 
 
 @app.get('/api/health')

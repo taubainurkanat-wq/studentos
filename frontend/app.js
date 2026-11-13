@@ -33,7 +33,7 @@
   const labels = {overview:'Overview',tasks:'My tasks',courses:'Courses',schedule:'Schedule',settings:'Settings'};
   const scale = [[95,4],[90,3.67],[85,3.33],[80,3],[75,2.67],[70,2.33],[65,2],[60,1.67],[55,1.33],[50,1],[0,0]];
   const points = grade => scale.find(([threshold]) => Number(grade) >= threshold)[1];
-  const appState = {token:sessionStorage.getItem(TOKEN_KEY),data:null,page:'overview',filter:'all',search:'',authMode:'login'};
+  const appState = {token:sessionStorage.getItem(TOKEN_KEY),data:null,page:'overview',filter:'all',search:'',authMode:'login',publicDemo:false};
   let toastTimer;
 
   function todayDate(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
@@ -66,7 +66,21 @@
   function setBusy(button,busy){if(!button)return;button.disabled=busy;button.dataset.original ||= button.innerHTML;if(busy)button.innerHTML='Working…';else button.innerHTML=button.dataset.original;}
 
   function showAuth(){ $('auth').hidden=false;$('app').hidden=true;$('modalHost').innerHTML='';renderAuth(); }
-  function renderAuth(){const register=appState.authMode==='register';$('authTitle').innerHTML=register?'Create your space<span class="dot">.</span>':'Welcome back<span class="dot">.</span>';
+  function renderAuth(){
+    if(appState.publicDemo){
+      $('authTitle').innerHTML='Explore StudentOS<span class="dot">.</span>';
+      $('authSubtitle').textContent='Try the full app with temporary sample data. Changes are not saved permanently.';
+      $('authForm').hidden=true;
+      document.querySelector('.divider-label').hidden=true;
+      $('authSwitch').hidden=true;
+      $('demoButton').innerHTML='<span class="demo-icon">✦</span> Launch interactive demo <span>↗</span>';
+      document.querySelector('.auth-footnote').textContent='Public portfolio demo: do not enter real passwords, grades, or personal information. Data can reset at any time.';
+      return;
+    }
+    $('authForm').hidden=false;
+    document.querySelector('.divider-label').hidden=false;
+    $('authSwitch').hidden=false;
+    const register=appState.authMode==='register';$('authTitle').innerHTML=register?'Create your space<span class="dot">.</span>':'Welcome back<span class="dot">.</span>';
     $('authSubtitle').textContent=register?'A smarter semester starts right here.':'Your workspace is right where you left it.';
     $('nameField').hidden=!register;$('authName').required=register;$('authPassword').autocomplete=register?'new-password':'current-password';
     $('authSubmit').innerHTML=register?'Create account <span>→</span>':'Sign in <span>→</span>';
@@ -196,6 +210,11 @@
     document.addEventListener('submit',async e=>{if(e.target.id==='modalForm'){e.preventDefault();await saveModal(e.target);}if(e.target.id==='profileForm'){e.preventDefault();const btn=e.target.querySelector('button[type=submit]');setBusy(btn,true);try{await api('/api/me',{method:'PATCH',body:{name:new FormData(e.target).get('name').trim()}});await reload();renderAll();toast('Profile updated');}catch(err){toast(err.message,true);setBusy(btn,false);}}});
     document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('backdrop'))closeModal();});
   }
-  async function main(){bindEvents();if(!appState.token){showAuth();return;}try{await reload();$('auth').hidden=true;$('app').hidden=false;renderAll();}catch{signOut();}}
+  async function main(){
+    bindEvents();
+    try{const config=await api('/api/config',{authorized:false});appState.publicDemo=Boolean(config.public_demo);}catch{}
+    if(!appState.token){showAuth();return;}
+    try{await reload();$('auth').hidden=true;$('app').hidden=false;renderAll();}catch{signOut();}
+  }
   main();
 })();

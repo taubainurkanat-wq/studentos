@@ -85,3 +85,22 @@ def test_frontend_served(client):
     assert 'StudentOS' in client.get('/').text
     assert client.get('/assets/app.js').status_code == 200
     assert client.get('/api/health').json()['status'] == 'ok'
+
+
+def test_public_demo_mode(tmp_path, monkeypatch):
+    monkeypatch.setenv('STUDENTOS_DB', str(tmp_path/'public.db'))
+    monkeypatch.setenv('STUDENTOS_PUBLIC_DEMO', '1')
+    import app as module
+    importlib.reload(module)
+    with TestClient(module.app) as c:
+        assert c.get('/api/config').json()['public_demo'] is True
+        assert c.post('/api/auth/register', json={
+            'name': 'Taylor Student', 'email': 'example@example.com', 'password': 'secure-password-123'
+        }).status_code == 403
+        assert c.post('/api/auth/login', json={
+            'email': 'example@example.com', 'password': 'secure-password-123'
+        }).status_code == 403
+        response = c.post('/api/auth/demo')
+        assert response.status_code == 200, response.text
+        headers = {'Authorization': f"Bearer {response.json()['token']}"}
+        assert len(c.get('/api/state', headers=headers).json()['courses']) == 4

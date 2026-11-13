@@ -10,11 +10,19 @@ A thoughtfully designed, full-stack student workspace for courses, assignments, 
 
 ### [Launch the live demo](https://studentos-demo.onrender.com) · [View source on GitHub](https://github.com/taubainurkanat-wq/studentos)
 
-[Features](#features) · [Quick start](#quick-start) · [Live demo deployment](#live-demo-deployment) · [API](#api) · [Roadmap](#roadmap)
+[Figma design](#figma-design-case-study) · [Features](#features) · [Quick start](#quick-start) · [Live demo deployment](#live-demo-deployment) · [API](#api) · [Roadmap](#roadmap)
 
 </div>
 
 ![StudentOS desktop dashboard](docs/desktop.png)
+
+## Figma design case study
+
+[**Open the editable Figma design**](https://www.figma.com/design/sY2vgCp8rcxx8bRYpWtEuJ) · [**Read the UI/UX case study**](docs/design/README.md)
+
+Seven editable boards explore the desktop overview, task management, creation form, mobile layout, recovery states and reusable components. The case study includes exported previews, design decisions and developer handoff. This is a design proposal; the running application retains its current interface.
+
+![StudentOS Figma design concept](docs/design/cover.png)
 
 ## Overview
 

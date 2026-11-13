@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0c0f19" />
+  <meta name="description" content="StudentOS — a beautifully focused academic workspace for courses, tasks, grades and weekly planning." />
+  <title>StudentOS — Your academic command center</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/assets/styles.css" />
+  <script defer src="/assets/app.js"></script>
+</head>
+<body>
+  <div id="auth" class="auth-layout" hidden>
+    <div class="auth-aside">
+      <div class="auth-brand"><div class="logo-icon">S<span>.</span></div><span>student<span class="brand-light">os</span></span></div>
+      <div class="auth-copy">
+        <div class="eyebrow"><span class="live-dot"></span> THE STUDENT WORKSPACE</div>
+        <h1>Make space for<br/><span>your best work.</span></h1>
+        <p>One beautiful place for every course, deadline and small win along the way.</p>
+        <div class="auth-feature-list">
+          <div><span class="feature-bullet">✦</span> See your academic progress at a glance</div>
+          <div><span class="feature-bullet">✦</span> Stay ahead of important deadlines</div>
+          <div><span class="feature-bullet">✦</span> Organize classes, tasks and grades</div>
+        </div>
+      </div>
+      <div class="auth-art" aria-hidden="true">
+        <div class="art-panel art-top"><span class="art-icon">↗</span><span>You're making progress</span><strong>+24%</strong></div>
+        <div class="art-panel art-main"><div class="art-head"><span>YOUR WEEK AT A GLANCE</span><span>···</span></div><div class="art-bars"><span style="height:47%"></span><span style="height:76%"></span><span style="height:56%"></span><span style="height:95%"></span><span style="height:71%"></span><span style="height:42%"></span><span style="height:61%"></span></div><div class="art-caption">A little progress, every day.</div></div>
+        <div class="art-orb"></div>
+      </div>
+      <div class="auth-footer">DESIGNED FOR THE WAY YOU LEARN.</div>
+    </div>
+    <main class="auth-form-area">
+      <div class="auth-form-card">
+        <div class="auth-mobile-logo"><div class="logo-icon">S<span>.</span></div> studentos</div>
+        <span class="auth-welcome-tag">WELCOME TO STUDENTOS</span>
+        <h2 id="authTitle">Welcome back<span class="dot">.</span></h2>
+        <p id="authSubtitle" class="muted">Your workspace is right where you left it.</p>
+        <form id="authForm" class="form-stack">
+          <div id="nameField" hidden><label for="authName">Your name</label><input type="text" name="name" id="authName" placeholder="Alex Morgan" autocomplete="name" minlength="2" maxlength="70" /></div>
+          <div><label for="authEmail">Email address</label><input type="email" name="email" id="authEmail" placeholder="you@university.edu" autocomplete="email" required /></div>
+          <div><div class="form-label-row"><label for="authPassword">Password</label></div><input type="password" name="password" id="authPassword" placeholder="At least 8 characters" autocomplete="current-password" required minlength="8" /></div>
+          <button class="btn primary full" type="submit" id="authSubmit">Sign in <span>→</span></button>
+        </form>
+        <div class="divider-label"><span>or</span></div>
+        <button class="btn demo-btn full" type="button" id="demoButton"><span class="demo-icon">✦</span> Explore demo workspace <span>↗</span></button>
+        <p class="auth-switch" id="authSwitch">New here? <button type="button" id="authToggle">Create an account</button></p>
+        <p class="auth-footnote">StudentOS is a portfolio project. Don't use important passwords or confidential information.</p>
+      </div>
+    </main>
+  </div>
+
+  <div id="app" class="app-shell" hidden>
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <a class="brand" href="/" aria-label="StudentOS home"><div class="logo-icon">S<span>.</span></div><span>student<span class="brand-light">os</span></span></a>
+        <div class="workspace-label">WORKSPACE</div>
+        <nav class="nav-main" aria-label="Main navigation">
+          <button class="nav-btn active" data-nav="overview"><span data-icon="layout-dashboard"></span> Overview</button>
+          <button class="nav-btn" data-nav="tasks"><span data-icon="check-square"></span> My tasks <span class="nav-count" id="navTaskCount"></span></button>
+          <button class="nav-btn" data-nav="courses"><span data-icon="book-open"></span> Courses</button>
+          <button class="nav-btn" data-nav="schedule"><span data-icon="calendar"></span> Schedule</button>
+        </nav>
+        <div class="workspace-label tools-label">PREFERENCES</div>
+        <nav class="nav-main" aria-label="Preferences"><button class="nav-btn" data-nav="settings"><span data-icon="settings"></span> Settings</button></nav>
+        <div class="sidebar-spacer"></div>
+        <div class="sidebar-tip"><div class="tip-star">✳</div><strong>Small steps.<br/>Big outcomes.</strong><p>Make today count. You've got this.</p><span class="tip-decoration">✳</span></div>
+        <button class="sidebar-user" data-nav="settings"><span id="sidebarAvatar" class="avatar">AM</span><span class="sidebar-user-text"><strong id="sidebarUsername">Your account</strong><small>My workspace</small></span><span data-icon="chevrons-up-down"></span></button>
+      </div>
+    </aside>
+    <div class="main-wrap">
+      <header class="topbar">
+        <div class="topbar-left"><span class="mobile-logo"><span class="mobile-logo-badge">S.</span> studentos</span><span class="breadcrumb-muted">Workspace</span><span class="crumb-chevron">/</span><span id="breadcrumb">Overview</span></div>
+        <div class="topbar-right"><div class="today-pill" id="topDate"></div><button class="top-add btn small primary" data-action="add-task"><span data-icon="plus"></span> New task</button><button class="top-avatar" data-nav="settings" id="topAvatar" aria-label="Account settings">AM</button></div>
+      </header>
+      <main class="page-content" id="content" tabindex="-1"></main>
+      <div class="bottom-nav" aria-label="Mobile navigation">
+        <button data-nav="overview"><span data-icon="layout-dashboard"></span><small>Home</small></button>
+        <button data-nav="tasks"><span data-icon="check-square"></span><small>Tasks</small></button>
+        <button data-nav="courses"><span data-icon="book-open"></span><small>Courses</small></button>
+        <button data-nav="schedule"><span data-icon="calendar"></span><small>Week</small></button>
+        <button data-nav="settings"><span data-icon="settings"></span><small>Profile</small></button>
+      </div>
+    </div>
+  </div>
+  <div id="modalHost"></div>
+  <div id="toast" class="toast" aria-live="polite"></div>
+</body>
+</html>

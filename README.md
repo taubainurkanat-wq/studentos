@@ -1,85 +1,92 @@
-# Этаж 13 · После отбоя
+# Floor 13 · After Hours
 
-Хоррор-кампания из пяти этажей для iPhone и ПК. Лифт остановился на этаже, которого нет. Восстанови питание, открой комнату 13 и найди выход, пока коридор слушает твои шаги.
+A first-person horror game for desktop and iPhone browsers. Escape five connected floors by exploring rooms, solving puzzles and staying out of sight of a creature that reacts to light and running.
 
-## Запуск на iPhone
+**[Play the game](https://floor13-after-hours.onrender.com)** · **[Инструкция на русском](README_RU.md)**
 
-Открой опубликованную ссылку игры в Safari. Нажми «Начать игру». Для удобства поверни телефон горизонтально. Касание слева создаёт джойстик под пальцем, перетаскивание справа поворачивает камеру. Короткое касание справа взаимодействует с ближайшим предметом. Можно одновременно двигаться и осматриваться. Кнопка с ладонью взаимодействует с предметом, когда появится подсказка.
+![Floor 13 main menu](docs/menu.jpg)
 
-Чтобы установить игру на главный экран, в Safari нажми «Поделиться» → «На экран Домой» → «Добавить». Запусти значок «Этаж 13». После первой полной загрузки файлы игры кэшируются для повторного запуска без интернета, если браузер и хостинг разрешают service worker. Авторизация частного хостинга может потребовать интернет. Safari может очистить данные сайта при нехватке места. Сохранение относится к текущему устройству и браузеру.
+## Gameplay
 
-Игра поставляется как PWA. Для запуска по ссылке не требуется Xcode. Для отдельной публикации iOS-приложения в App Store потребуется нативная упаковка, Mac/Xcode, подпись и аккаунт Apple Developer.
+- Five floor layouts with alternate passages, locked rooms and different objectives.
+- An enemy with line-of-sight detection, sound awareness, patrol routes and pursuit memory.
+- Flashlight charge, stamina, crouching and a safe room on each floor.
+- Archive fragments, ordered valves, a radio-frequency puzzle and a timed final escape.
+- Checkpoints, chapter selection, collectible tapes and local personal records.
+- A daily challenge with different item positions and access codes after completing the campaign.
+- Floating touch joystick, independent camera gestures and adjustable button sizes.
+- Story, normal and hard modes. Story mode disables pursuit and the final countdown.
 
-## Запуск на ПК из исходников
+![Desktop gameplay](docs/desktop.jpg)
 
-Нужен Node.js 20 или новее. Дополнительные пакеты устанавливать не требуется.
+## Campaign
+
+| Floor | Chapter | Objective |
+|---|---|---|
+| 13 | After Hours | Restore power, find a key and discover the staircase code |
+| 12 | Archive of Voices | Collect three archive cards and unlock a terminal |
+| 11 | Under Pressure | Read the instructions and close valves in order |
+| 10 | Dead Frequency | Power a radio, tune its frequency and retrieve a transcript |
+| −1 | Last Shift | Find three power modules and escape before the generator stops |
+
+The game interface and story are in Russian.
+
+## Run locally
+
+Requires **Node.js 20+**. The project uses local assets and has no package-install step.
 
 ```sh
 node server.mjs
 ```
 
-Открой http://localhost:8080. В Windows можно запустить `START_WINDOWS.bat`. Не открывай `dist/index.html` двойным щелчком, модулям JavaScript нужен HTTP-сервер. Опубликованная версия открывается на ПК прямо по ссылке.
+Open **http://localhost:8080**. Windows users can also run `START_WINDOWS.bat`. ES modules require an HTTP server, so launch through the server instead of opening the HTML file directly.
 
-WASD — движение. Мышь — обзор. Если захват мыши недоступен, удерживай левую кнопку и перетаскивай сцену. Стрелки вверх/вниз — движение, влево/вправо — поворот.
+## Controls
 
-E — взаимодействие, F — фонарик, C — присесть, Shift — бег, J — журнал и план этажа, Esc — пауза. Во время ввода кода можно пользоваться цифрами клавиатуры, Backspace и Enter.
+| Action | Desktop | Touch |
+|---|---|---|
+| Move | WASD / up and down arrows | Touch and drag on the left |
+| Look | Mouse, drag, or left and right arrows | Drag on the right |
+| Interact | E | Action button or a short tap on the right |
+| Flashlight | F | Light button |
+| Crouch | C | Quiet button |
+| Run | Hold Shift | Full forward joystick tilt or run toggle |
+| Journal and map | J | Map button at the top |
+| Pause | Esc | Pause button |
 
-## Игровые правила
+On iPhone, open the game in Safari. Use Share → Add to Home Screen to launch it as a standalone web app. The service worker caches game assets after the first successful load. Saved progress and records belong to the current browser and domain, and browser storage can be cleared by the operating system.
 
-1. Найди предохранитель в кладовой.
-2. Вставь его в щиток напротив. Рядом появится ключ от комнаты 13.
-3. Открой комнату 13 в дальнем конце коридора и прочитай записку.
-4. Вернись к лестнице в западном конце и введи найденный код.
+To preview the touch layout on a desktop, open `http://localhost:8080/?controls=touch`.
 
-Существо появляется после восстановления питания. Оно замечает включённый фонарик издалека и слышит бег. За стеной оно теряет визуальный контакт. Уйди в комнату, выключи свет и присядь. В комнате с зелёной лампой тебя не поймают. При выключенном фонарике заряд постепенно восстанавливается.
+## Implementation
 
-Прогресс сохраняется после находок, при паузе и каждые пять секунд. После поимки можно очнуться в тихой комнате с найденными предметами. Новая игра заменяет предыдущее прохождение после подтверждения. В настройках есть режим «История» без погони, обычный и тяжёлый режимы.
-
-## Состав проекта
-
-| Файл | Назначение |
+| Module | Responsibility |
 |---|---|
-| `dist/game.js` | Сюжет, управление, интерфейс, AI, сохранение |
-| `dist/world.js` | 3D-сцена, процедурные текстуры, освещение и предметы |
-| `dist/core.js` | Карта, коллизии, поиск пути, проверка сохранений |
-| `dist/audio.js` | Синтез шагов, эмбиента и звуков предметов через Web Audio |
-| `dist/style.css` | Интерфейс и мобильное управление |
-| `dist/sw.js` | Кэш файлов для повторного запуска |
-| `dist/manifest.webmanifest` | Установка на домашний экран |
-| `dist/vendor/three.module.js` | Локальная копия Three.js 0.170.0 |
-| `server.mjs` | Локальный сервер без зависимостей |
-| `tests/core.test.mjs` | Проходимость, коллизии, видимость и сохранения |
+| `dist/world.js` | Three.js scene, procedural textures, lights, props and creature model |
+| `dist/game.js` | Gameplay loop, UI, interactions, pursuit and checkpoints |
+| `dist/campaign.js` | Floor objectives, prerequisites, codes and transitions |
+| `dist/core.js` | Grid collision, visibility, breadth-first pathfinding and save validation |
+| `dist/touch.js` | Independent movement and look pointer ownership |
+| `dist/audio.js` | Locally synthesized ambience, footsteps and item sounds |
+| `dist/sw.js` | Offline asset cache |
+| `server.mjs` | Dependency-free local HTTP server |
 
-Все текстуры и звуки создаются в игре. Загрузки с CDN во время игры нет. Прогресс хранится в localStorage. Передачи микрофона, геолокации или персональных данных в игровом коде нет.
+The browser loads the bundled **Three.js 0.170.0** module. Wall and floor textures are generated with Canvas, and sounds are synthesized using Web Audio. Progress uses localStorage. No gameplay backend or external asset CDN is needed at runtime.
 
-## Проверка
+## Validation
 
 ```sh
-node --test tests/*.test.mjs
-node --check dist/game.js
-node --check dist/world.js
+npm test
 ```
 
-Проверяй на реальном iPhone в Safari, в альбомной и портретной ориентации, при сворачивании и возвращении в игру, с двумя касаниями одновременно и после установки на главный экран. Уровень графики можно понизить в настройках.
+The 14 automated tests cover objective reachability across all five layouts, collision and visibility, puzzle prerequisites, valve reset behavior, floor transitions, save migration, daily challenge placement and independent touch pointers. GitHub Actions checks JavaScript syntax and runs the suite on pushes and pull requests.
 
-## Лицензии
+The touch layout was reviewed at portrait and landscape phone viewport sizes in a desktop browser. Physical iPhone performance and Safari-specific behavior still need device testing.
 
-Код проекта — MIT, см. `LICENSE`. Three.js распространяется по MIT, его текст лицензии находится в `dist/vendor/THREE-LICENSE.txt`.
+## Project context
 
-## Кампания 2.0
+A software engineering portfolio project by Nurkanat, developed with AI assistance. The source demonstrates browser-based 3D rendering, gameplay state, pathfinding, input handling and testing. Screenshots show the running application.
 
-| Этаж | Задача |
-|---|---|
-| 13 — После отбоя | Предохранитель, питание, ключ и код |
-| 12 — Архив голосов | Три карточки и терминал архива |
-| 11 — Под давлением | Инструкция и вентили в правильном порядке |
-| 10 — Мёртвая частота | Два аккумулятора, частота 3142 и расшифровка радио |
-| −1 — Последняя смена | Три силовых модуля, генератор и побег до отключения |
+## License
 
-Лестница переводит на следующий этаж. Планировки этажей различаются дополнительными проходами и перегородками. Между этажами сохраняются общее время и кассеты, а задания начинаются заново. Ошибка на вентилях сбрасывает их порядок. В режиме «История» финальный таймер не уменьшается.
-
-После прохождения открываются выбор глав, локальные рекорды и ежедневная смена с другими кодами и расположением предметов. Рекорды хранятся на текущем устройстве. Сохранения версии 1 автоматически обновляются на прежнем адресе. При переходе на другой домен браузер использует отдельное сохранение.
-
-На телефоне размер кнопок регулируется в настройках. Бег включается полным наклоном джойстика или кнопкой-переключателем. Чтобы проверить сенсорный интерфейс на ПК, открой `/?controls=touch`.
-
-Новые модули `dist/campaign.js` и `dist/touch.js` содержат правила этажей и обработку независимых касаний. Проверки `tests/campaign.test.mjs` и `tests/touch.test.mjs` охватывают переходы, требования задач, миграцию сохранений и владение указателями.
+Project code is available under the [MIT License](LICENSE). Three.js retains its [upstream MIT license](dist/vendor/THREE-LICENSE.txt).

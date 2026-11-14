@@ -73,8 +73,6 @@ python -m pip install -r requirements.txt
 python -m uvicorn app:app --reload
 ```
 
-> The clone link will work once this project has been published to that repository.
-
 ### Windows PowerShell (manual alternative)
 
 ```powershell
@@ -99,26 +97,25 @@ The Blueprint uses `STUDENTOS_PUBLIC_DEMO=1`, which disables real user registrat
 
 ## Project structure
 
-```text
-StudentOS/
-├── app.py                # FastAPI routes, authentication, SQLite database
-├── frontend/
-│   ├── index.html        # App shell, authentication screen
-│   ├── styles.css        # Custom responsive UI
-│   ├── app.js            # State management, API calls, forms and views
-│   └── favicon.svg
-├── tests/
-│   └── test_app.py       # API tests: auth, CRUD, access control, validation
-├── docs/
-│   ├── desktop.png
-│   └── mobile.png
-├── .github/workflows/     # Automated GitHub Actions tests
-├── requirements.txt
-├── render.yaml             # Public Render demo deployment
-├── start.bat              # One-click Windows launcher
-├── start.sh               # macOS/Linux launcher
-└── README.md
-```
+| Location | Responsibility |
+|---|---|
+| `app.py` | ASGI entry point; keeps the existing launch commands |
+| `backend/application.py` | App factory, router registration and static files |
+| `backend/config.py` | Environment settings and project paths |
+| `backend/database.py` | SQLite schema, connections and record helpers |
+| `backend/security.py` | Password hashing, sessions and user authentication |
+| `backend/schemas.py` | Request validation models |
+| `backend/routes/auth.py` | Authentication, demo workspaces and profile |
+| `backend/routes/workspace.py` | Courses, tasks and timetable API |
+| `frontend/app.js` | Views, forms and event orchestration |
+| `frontend/api.js` | HTTP requests and session error handling |
+| `frontend/state.js` | Browser workspace and session state |
+| `frontend/utils.js` | Icons, formatting and shared presentation helpers |
+| `frontend/index.html`, `frontend/styles.css` | App shell and responsive styling |
+| `tests/`, `.github/workflows/` | API regression tests and continuous integration |
+| `docs/` | Screenshots and Figma case study |
+| `render.yaml` | Public demo deployment configuration |
+| `start.bat`, `start.sh` | Local launch scripts |
 
 The app stores data in **`studentos.db`**, created automatically on first launch. The database file and virtual environment are excluded from version control.
 
@@ -154,13 +151,19 @@ python -m pip install -r requirements.txt pytest httpx
 python -m pytest -q
 ```
 
-The automated tests cover registration/login/logout, separate account ownership, CRUD for courses/tasks/schedule, input validation, demo data, and static file serving. GitHub Actions runs the same suite on every push and pull request.
+Frontend checks (Node.js 22+, needed only for development):
+
+```bash
+node --experimental-default-type=module --test tests/frontend.test.mjs
+```
+
+The automated tests cover registration/login/logout, separate account ownership, CRUD for courses/tasks/schedule, input validation, demo data, and static file serving. GitHub Actions runs the API suite, browser module syntax checks and frontend helper/API tests on every push and pull request.
 
 ## Security and privacy
 
-StudentOS is a portfolio **MVP**, designed to run locally. Passwords use salted PBKDF2-HMAC-SHA256 hashes; random session tokens are stored as SHA-256 hashes and expire in seven days; SQL queries use bound parameters; and users cannot edit other users' records.
+StudentOS is a portfolio **MVP** with local accounts and a disposable public demo. Passwords use salted PBKDF2-HMAC-SHA256 hashes; random session tokens are stored as SHA-256 hashes and expire in seven days; SQL queries use bound parameters; and users cannot edit other users' records.
 
-**Before exposing this application on the public internet**, add HTTPS, rate limiting for authentication/demo endpoints, account recovery, session management controls, logging/monitoring, production deployment configuration and a stronger operational database strategy. Do not use a real university password. The demo creates disposable sample accounts; use registration if you want a reusable account.
+**Before offering persistent public accounts**, add rate limiting, account recovery, session management controls, logging/monitoring and durable database storage; serve the application over HTTPS. Registration is available in local mode and disabled in the public portfolio demo.
 
 ## Roadmap
 
@@ -174,7 +177,7 @@ StudentOS is a portfolio **MVP**, designed to run locally. Passwords use salted 
 - [ ] Add weighted assignments and configurable university grade scales
 - [ ] Calendar sync and notifications
 - [x] Render Blueprint for a disposable public demo
-- [ ] Verify public HTTPS deployment URL on Render
+- [ ] Add automated deployment smoke checks
 - [ ] Accessibility and end-to-end browser tests in CI
 
 ---

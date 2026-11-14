@@ -83,7 +83,9 @@ def test_validation_and_demo(client):
 def test_frontend_served(client):
     assert client.get('/').status_code == 200
     assert 'StudentOS' in client.get('/').text
-    assert client.get('/assets/app.js').status_code == 200
+    assert '<script type="module" src="/assets/app.js"></script>' in client.get('/').text
+    for name in ('app.js', 'api.js', 'state.js', 'utils.js'):
+        assert client.get(f'/assets/{name}').status_code == 200
     assert client.get('/api/health').json()['status'] == 'ok'
 
 

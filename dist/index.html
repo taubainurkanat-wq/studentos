@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#111614" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Этаж 13" />
+    <meta
+      name="description"
+      content="Этаж 13 — атмосферный хоррор от первого лица. Найди выход из ночного общежития."
+    />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icon.png" />
+    <link rel="apple-touch-icon" href="icon.png" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="mobile.css" />
+    <title>Этаж 13 · После отбоя</title>
+  </head>
+  <body>
+    <canvas id="scene" aria-label="Игровой мир"></canvas>
+    <div class="lens" aria-hidden="true"></div>
+    <div id="danger" aria-hidden="true"></div>
+    <div id="fade" aria-hidden="true"></div>
+
+    <section id="menu" class="screen menu">
+      <div class="brandline">
+        <span class="small-dot"></span> НОЧНАЯ СМЕНА <span class="line"></span> 02:13
+      </div>
+      <div class="menu-content">
+        <p class="overline">ПОСЛЕ ОТБОЯ</p>
+        <h1>ЭТАЖ <span>13</span></h1>
+        <p class="tagline">Ты помнишь двенадцать этажей.<br />Лифт помнит больше.</p>
+        <div class="menu-actions">
+          <button id="start" class="primary">Начать игру <span>↗</span></button>
+          <button id="continue" class="secondary" hidden>Продолжить</button>
+          <button id="chaptersButton" class="secondary">Этажи и рекорды</button>
+          <button id="challengeButton" class="secondary" hidden>Ежедневная смена</button>
+          <button id="menuSettings" class="text-button">Настройки и управление</button>
+        </div>
+      </div>
+      <footer class="menu-footer">
+        <span>ПЯТЬ ЭТАЖЕЙ · ОДНА НОЧЬ</span><span>Лучше в наушниках</span>
+      </footer>
+      <div class="door-caption">ОБЩЕЖИТИЕ № 13<br /><span>свет погас не случайно</span></div>
+    </section>
+
+    <section id="hud" hidden>
+      <header class="hud-top">
+        <button id="touchJournalTop" class="glass icon-button" aria-label="План этажа">▤</button>
+        <div class="objective">
+          <span id="chapterLabel" class="overline">01 / ЧУЖОЙ ЭТАЖ</span
+          ><strong id="objective"></strong>
+        </div>
+        <button id="pauseButton" class="glass icon-button" aria-label="Пауза">Ⅱ</button>
+      </header>
+      <div id="escapeTimer" hidden></div>
+      <div id="floorBadge"></div>
+      <div id="reticle" aria-hidden="true"></div>
+      <div id="interaction" hidden><span id="interactionLabel"></span><kbd>E</kbd></div>
+      <div id="subtitle" role="status" aria-live="polite"></div>
+      <div id="toast" role="status"></div>
+      <div class="hud-bottom">
+        <div class="meters">
+          <div class="meter-label">
+            <span id="lightStatus">СВЕТ ВКЛЮЧЁН</span><span id="batteryValue">100%</span>
+          </div>
+          <div class="meter"><i id="batteryBar"></i></div>
+          <div class="stamina"><i id="staminaBar"></i></div>
+          <span id="stance">Стоя</span>
+        </div>
+        <div id="inventory">
+          <span id="fuseSlot">ПРЕДОХРАНИТЕЛЬ</span><span id="keySlot">КЛЮЧ 13</span
+          ><span id="codeSlot">КОД ВЫХОДА</span>
+        </div>
+        <div class="desktop-hint">
+          WASD движение <b>·</b> F фонарик <b>·</b> C присесть <b>·</b> J записи
+        </div>
+      </div>
+      <div id="touchControls">
+        <div id="joystick" aria-label="Движение"><div id="stick"></div></div>
+        <div class="touch-buttons">
+          <button id="touchInteract" class="glass" aria-label="Взаимодействовать">
+            ✋<small>Действие</small>
+          </button>
+          <button id="touchLight" class="glass" aria-label="Переключить фонарик">
+            ☀<small>Свет</small>
+          </button>
+          <button id="touchCrouch" class="glass" aria-label="Присесть">⌄<small>Тише</small></button>
+          <button id="touchRun" class="glass" aria-label="Бежать">»<small>Бег</small></button>
+          <button id="touchJournal" class="glass" aria-label="Записи">
+            ▤<small>Записи</small>
+          </button>
+        </div>
+        <span id="lookHint">Проведи справа, чтобы осмотреться</span>
+      </div>
+    </section>
+
+    <section id="overlay" class="screen overlay" hidden>
+      <div class="panel wide" id="chaptersPanel" hidden>
+        <p class="overline">ПУТЬ ВНИЗ</p>
+        <h2>Этажи</h2>
+        <div id="chapterList"></div>
+        <p id="recordsText" class="help"></p>
+        <button class="primary backButton">Назад <span>↗</span></button>
+      </div>
+      <div class="panel" id="transitionPanel" hidden>
+        <p id="transitionLabel" class="overline"></p>
+        <h2 id="transitionTitle"></h2>
+        <p id="transitionText" class="note-copy"></p>
+        <div id="transitionStats" class="help"></div>
+        <button id="nextFloorButton" class="primary">Спуститься ниже <span>↓</span></button>
+      </div>
+      <div class="panel" id="pausePanel" hidden>
+        <p class="overline">ПЕРЕВЕДИ ДЫХАНИЕ</p>
+        <h2>Тишина.</h2>
+        <button id="resume" class="primary">Вернуться в коридор <span>↗</span></button>
+        <button id="journalButton" class="secondary">Записи и план этажа</button>
+        <button id="settingsButton" class="secondary">Настройки и управление</button>
+        <button id="toMenu" class="text-button">Сохранить и выйти в меню</button>
+      </div>
+      <div class="panel wide" id="settingsPanel" hidden>
+        <p class="overline">ПОД СЕБЯ</p>
+        <h2>Настройки</h2>
+        <label>Громкость <input id="volume" type="range" min="0" max="100" value="65" /></label>
+        <label>Яркость <input id="brightness" type="range" min="80" max="180" value="115" /></label>
+        <label
+          >Чувствительность <input id="sensitivity" type="range" min="30" max="160" value="80"
+        /></label>
+        <label
+          >Графика
+          <select id="quality">
+            <option value="low">Экономная</option>
+            <option value="medium" selected>Сбалансированная</option>
+            <option value="high">Высокая</option>
+          </select></label
+        >
+        <label
+          >Напряжение
+          <select id="difficulty">
+            <option value="story">История — без погони</option>
+            <option value="normal" selected>Обычное</option>
+            <option value="hard">Тяжёлое</option>
+          </select></label
+        >
+        <label
+          >Размер кнопок <input id="controlScale" type="range" min="90" max="150" value="115"
+        /></label>
+        <label class="check"
+          ><input id="tapInteract" type="checkbox" checked /> Касание предмета — действие</label
+        >
+        <label class="check"
+          ><input id="autoRun" type="checkbox" checked /> Бег при полном наклоне джойстика</label
+        >
+        <label class="check"
+          ><input id="motion" type="checkbox" checked /> Покачивание камеры</label
+        >
+        <p class="help">
+          ПК — WASD / стрелки, мышь или перетаскивание для обзора, E — действие, F — свет, C —
+          присесть, Shift — бег, J — записи, Esc — пауза.<br /><br />iPhone — касайся слева для
+          движения, веди пальцем справа для обзора. Джойстик появляется под пальцем. Кнопки справа —
+          действия. Для игры удобнее повернуть телефон горизонтально.
+        </p>
+        <button class="primary backButton">Готово <span>↗</span></button>
+      </div>
+      <div class="panel wide" id="journalPanel" hidden>
+        <p class="overline">НЕ ЗАБЫВАЙ</p>
+        <h2>Записи</h2>
+        <canvas id="map" width="540" height="300" aria-label="План этажа"></canvas>
+        <div id="notes"></div>
+        <button class="primary backButton">Закрыть <span>↗</span></button>
+      </div>
+      <div class="panel" id="notePanel" hidden>
+        <p class="overline" id="noteSource"></p>
+        <h2 id="noteTitle"></h2>
+        <p class="note-copy" id="noteText"></p>
+        <button class="primary backButton">Убрать в записи <span>↗</span></button>
+      </div>
+      <div class="panel" id="keypadPanel" hidden>
+        <p class="overline">ЛЕСТНИЧНАЯ КЛЕТКА</p>
+        <h2>Код доступа</h2>
+        <div id="codeDisplay" aria-live="polite">— — — —</div>
+        <div id="keypad"></div>
+        <p id="codeMessage">Четыре цифры. Записка в комнате 13.</p>
+        <button class="text-button backButton">Отойти от двери</button>
+      </div>
+      <div class="panel ending" id="endingPanel" hidden>
+        <p class="overline" id="endingLabel"></p>
+        <h2 id="endingTitle"></h2>
+        <p id="endingText" class="note-copy"></p>
+        <div id="resultStats"></div>
+        <button id="retry" class="primary"></button
+        ><button id="endingMenu" class="text-button">В главное меню</button>
+      </div>
+    </section>
+    <div id="loading">Открываем дверь…</div>
+    <noscript>Для запуска игры включи JavaScript в браузере.</noscript>
+    <script type="module" src="game.js"></script>
+  </body>
+</html>

@@ -1,185 +1,85 @@
-<div align="center">
+# Этаж 13 · После отбоя
 
-# ✳ StudentOS
+Хоррор-кампания из пяти этажей для iPhone и ПК. Лифт остановился на этаже, которого нет. Восстанови питание, открой комнату 13 и найди выход, пока коридор слушает твои шаги.
 
-### Your academic command center.
+## Запуск на iPhone
 
-A thoughtfully designed, full-stack student workspace for courses, assignments, weekly schedules and academic progress.
+Открой опубликованную ссылку игры в Safari. Нажми «Начать игру». Для удобства поверни телефон горизонтально. Касание слева создаёт джойстик под пальцем, перетаскивание справа поворачивает камеру. Короткое касание справа взаимодействует с ближайшим предметом. Можно одновременно двигаться и осматриваться. Кнопка с ладонью взаимодействует с предметом, когда появится подсказка.
 
-**FastAPI · Python · SQLite · JavaScript · HTML · CSS**
+Чтобы установить игру на главный экран, в Safari нажми «Поделиться» → «На экран Домой» → «Добавить». Запусти значок «Этаж 13». После первой полной загрузки файлы игры кэшируются для повторного запуска без интернета, если браузер и хостинг разрешают service worker. Авторизация частного хостинга может потребовать интернет. Safari может очистить данные сайта при нехватке места. Сохранение относится к текущему устройству и браузеру.
 
-### [Launch the live demo](https://studentos-demo.onrender.com) · [View source on GitHub](https://github.com/taubainurkanat-wq/studentos)
+Игра поставляется как PWA. Для запуска по ссылке не требуется Xcode. Для отдельной публикации iOS-приложения в App Store потребуется нативная упаковка, Mac/Xcode, подпись и аккаунт Apple Developer.
 
-[Figma design](#figma-design-case-study) · [Features](#features) · [Quick start](#quick-start) · [Live demo deployment](#live-demo-deployment) · [API](#api) · [Roadmap](#roadmap)
+## Запуск на ПК из исходников
 
-</div>
+Нужен Node.js 20 или новее. Дополнительные пакеты устанавливать не требуется.
 
-![StudentOS desktop dashboard](docs/desktop.png)
-
-## Figma design case study
-
-[**Open the editable Figma design**](https://www.figma.com/design/sY2vgCp8rcxx8bRYpWtEuJ) · [**Read the UI/UX case study**](docs/design/README.md)
-
-Seven editable boards explore the desktop overview, task management, creation form, mobile layout, recovery states and reusable components. The case study includes exported previews, design decisions and developer handoff. This is a design proposal; the running application retains its current interface.
-
-![StudentOS Figma design concept](docs/design/cover.png)
-
-## Overview
-
-StudentOS is a responsive academic productivity application, not just a static landing page. It combines a custom dark-mode interface with a Python REST API and SQLite persistence. Every signed-in user has their own courses, tasks, class schedule and grades.
-
-## Features
-
-- **Dashboard:** personalized overview, upcoming deadlines, progress ring, course summaries and next classes.
-- **Task manager:** create, edit, complete, search, filter and delete tasks; track priority, status and deadlines.
-- **Courses and grades:** manage courses, instructors, credits and current overall grades.
-- **Estimated GPA:** credit-weighted calculation on a sample 4.0 grading scale. Not an official university GPA.
-- **Weekly timetable:** add lectures, labs and seminars to a seven-day schedule.
-- **Accounts:** register, sign in, sign out and edit your profile.
-- **Try demo:** load an independent workspace with example courses and assignments instantly.
-- **Responsive UI:** optimized layouts for laptops, tablets and phones.
-- **API docs:** interactive OpenAPI documentation served automatically by FastAPI.
-
-<details>
-<summary>Mobile preview</summary>
-
-<img src="docs/mobile.png" alt="StudentOS responsive mobile dashboard" width="350" />
-
-</details>
-
-## Quick start
-
-You need **Python 3.11+**. No Node.js, npm or JavaScript build tools are required.
-
-### Windows (easiest)
-
-1. Download or clone this repository.
-2. Open the project folder.
-3. Double-click **`start.bat`**.
-4. Wait for the terminal to show the server address.
-5. Visit **http://127.0.0.1:8000** in your browser.
-6. Click **Explore demo workspace**, or register an account.
-
-On the first run, the script creates `.venv` and installs Python packages. Keep the terminal window open while using StudentOS.
-
-### Terminal / macOS / Linux
-
-```bash
-git clone https://github.com/taubainurkanat-wq/studentos.git
-cd studentos
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-python -m uvicorn app:app --reload
+```sh
+node server.mjs
 ```
 
-### Windows PowerShell (manual alternative)
+Открой http://localhost:8080. В Windows можно запустить `START_WINDOWS.bat`. Не открывай `dist/index.html` двойным щелчком, модулям JavaScript нужен HTTP-сервер. Опубликованная версия открывается на ПК прямо по ссылке.
 
-```powershell
-py -m venv .venv
-.venv\Scripts\python.exe -m pip install -r requirements.txt
-.venv\Scripts\python.exe -m uvicorn app:app --reload
-```
+WASD — движение. Мышь — обзор. Если захват мыши недоступен, удерживай левую кнопку и перетаскивай сцену. Стрелки вверх/вниз — движение, влево/вправо — поворот.
 
-## Live demo deployment
+E — взаимодействие, F — фонарик, C — присесть, Shift — бег, J — журнал и план этажа, Esc — пауза. Во время ввода кода можно пользоваться цифрами клавиатуры, Backspace и Enter.
 
-**Live demo:** [https://studentos-demo.onrender.com](https://studentos-demo.onrender.com)
+## Игровые правила
 
-This repository contains a Render Blueprint: [`render.yaml`](render.yaml).
+1. Найди предохранитель в кладовой.
+2. Вставь его в щиток напротив. Рядом появится ключ от комнаты 13.
+3. Открой комнату 13 в дальнем конце коридора и прочитай записку.
+4. Вернись к лестнице в западном конце и введи найденный код.
 
-1. Sign in to [Render](https://dashboard.render.com/) and connect your GitHub account.
-2. Choose **New → Blueprint** and select `taubainurkanat-wq/studentos`.
-3. Review the Blueprint; it specifies a **Free** Python Web Service named `studentos-demo`.
-4. Open the deployed app at **[studentos-demo.onrender.com](https://studentos-demo.onrender.com)**.
-5. Select **Launch interactive demo** to try the application without creating an account.
+Существо появляется после восстановления питания. Оно замечает включённый фонарик издалека и слышит бег. За стеной оно теряет визуальный контакт. Уйди в комнату, выключи свет и присядь. В комнате с зелёной лампой тебя не поймают. При выключенном фонарике заряд постепенно восстанавливается.
 
-The Blueprint uses `STUDENTOS_PUBLIC_DEMO=1`, which disables real user registration and sign-in, but creates isolated, temporary demo workspaces for visitors. The local version still supports registration and login. **The free Render filesystem is ephemeral**: sample tasks/grades may disappear after idle shutdown, restart, or redeployment. Do not enter real passwords, grades, or confidential information. Use durable storage and security controls before offering real accounts to the public.
+Прогресс сохраняется после находок, при паузе и каждые пять секунд. После поимки можно очнуться в тихой комнате с найденными предметами. Новая игра заменяет предыдущее прохождение после подтверждения. В настройках есть режим «История» без погони, обычный и тяжёлый режимы.
 
-## Project structure
+## Состав проекта
 
-| Location | Responsibility |
+| Файл | Назначение |
 |---|---|
-| `app.py` | ASGI entry point; keeps the existing launch commands |
-| `backend/application.py` | App factory, router registration and static files |
-| `backend/config.py` | Environment settings and project paths |
-| `backend/database.py` | SQLite schema, connections and record helpers |
-| `backend/security.py` | Password hashing, sessions and user authentication |
-| `backend/schemas.py` | Request validation models |
-| `backend/routes/auth.py` | Authentication, demo workspaces and profile |
-| `backend/routes/workspace.py` | Courses, tasks and timetable API |
-| `frontend/app.js` | Views, forms and event orchestration |
-| `frontend/api.js` | HTTP requests and session error handling |
-| `frontend/state.js` | Browser workspace and session state |
-| `frontend/utils.js` | Icons, formatting and shared presentation helpers |
-| `frontend/index.html`, `frontend/styles.css` | App shell and responsive styling |
-| `tests/`, `.github/workflows/` | API regression tests and continuous integration |
-| `docs/` | Screenshots and Figma case study |
-| `render.yaml` | Public demo deployment configuration |
-| `start.bat`, `start.sh` | Local launch scripts |
+| `dist/game.js` | Сюжет, управление, интерфейс, AI, сохранение |
+| `dist/world.js` | 3D-сцена, процедурные текстуры, освещение и предметы |
+| `dist/core.js` | Карта, коллизии, поиск пути, проверка сохранений |
+| `dist/audio.js` | Синтез шагов, эмбиента и звуков предметов через Web Audio |
+| `dist/style.css` | Интерфейс и мобильное управление |
+| `dist/sw.js` | Кэш файлов для повторного запуска |
+| `dist/manifest.webmanifest` | Установка на домашний экран |
+| `dist/vendor/three.module.js` | Локальная копия Three.js 0.170.0 |
+| `server.mjs` | Локальный сервер без зависимостей |
+| `tests/core.test.mjs` | Проходимость, коллизии, видимость и сохранения |
 
-The app stores data in **`studentos.db`**, created automatically on first launch. The database file and virtual environment are excluded from version control.
+Все текстуры и звуки создаются в игре. Загрузки с CDN во время игры нет. Прогресс хранится в localStorage. Передачи микрофона, геолокации или персональных данных в игровом коде нет.
 
-## API
+## Проверка
 
-Run the server and open **http://127.0.0.1:8000/api/docs** to explore every route.
+```sh
+node --test tests/*.test.mjs
+node --check dist/game.js
+node --check dist/world.js
+```
 
-| Area | Endpoints |
+Проверяй на реальном iPhone в Safari, в альбомной и портретной ориентации, при сворачивании и возвращении в игру, с двумя касаниями одновременно и после установки на главный экран. Уровень графики можно понизить в настройках.
+
+## Лицензии
+
+Код проекта — MIT, см. `LICENSE`. Three.js распространяется по MIT, его текст лицензии находится в `dist/vendor/THREE-LICENSE.txt`.
+
+## Кампания 2.0
+
+| Этаж | Задача |
 |---|---|
-| Authentication | `POST /api/auth/register`, `/login`, `/logout`, `/demo` |
-| Profile | `GET /api/me`, `PATCH /api/me` |
-| Application state | `GET /api/state` |
-| Courses | `POST /api/courses`, `PATCH /api/courses/{id}`, `DELETE /api/courses/{id}` |
-| Tasks | `POST /api/tasks`, `PATCH /api/tasks/{id}`, `DELETE /api/tasks/{id}` |
-| Timetable | `POST /api/schedule`, `PATCH /api/schedule/{id}`, `DELETE /api/schedule/{id}` |
+| 13 — После отбоя | Предохранитель, питание, ключ и код |
+| 12 — Архив голосов | Три карточки и терминал архива |
+| 11 — Под давлением | Инструкция и вентили в правильном порядке |
+| 10 — Мёртвая частота | Два аккумулятора, частота 3142 и расшифровка радио |
+| −1 — Последняя смена | Три силовых модуля, генератор и побег до отключения |
 
-All private operations require an `Authorization: Bearer <token>` header. Data is scoped to the signed-in user's account.
+Лестница переводит на следующий этаж. Планировки этажей различаются дополнительными проходами и перегородками. Между этажами сохраняются общее время и кассеты, а задания начинаются заново. Ошибка на вентилях сбрасывает их порядок. В режиме «История» финальный таймер не уменьшается.
 
-## GPA estimate
+После прохождения открываются выбор глав, локальные рекорды и ежедневная смена с другими кодами и расположением предметов. Рекорды хранятся на текущем устройстве. Сохранения версии 1 автоматически обновляются на прежнем адресе. При переходе на другой домен браузер использует отдельное сохранение.
 
-StudentOS converts a course's entered overall percentage to grade points and calculates a credit-weighted average:
+На телефоне размер кнопок регулируется в настройках. Бег включается полным наклоном джойстика или кнопкой-переключателем. Чтобы проверить сенсорный интерфейс на ПК, открой `/?controls=touch`.
 
-`GPA = Σ(grade_points × credits) / Σ(graded_course_credits)`
-
-The built-in sample scale is: 95–100 → 4.00, 90–94 → 3.67, 85–89 → 3.33, 80–84 → 3.00, 75–79 → 2.67, 70–74 → 2.33, 65–69 → 2.00, 60–64 → 1.67, 55–59 → 1.33, 50–54 → 1.00, below 50 → 0.00. Courses without a grade are not included.
-
-**Disclaimer:** grading policies vary between institutions. This feature is only a planning estimate and should not replace the university's official transcript or GPA calculation.
-
-## Tests
-
-```bash
-python -m pip install -r requirements.txt pytest httpx
-python -m pytest -q
-```
-
-Frontend checks (Node.js 22+, needed only for development):
-
-```bash
-node --experimental-default-type=module --test tests/frontend.test.mjs
-```
-
-The automated tests cover registration/login/logout, separate account ownership, CRUD for courses/tasks/schedule, input validation, demo data, and static file serving. GitHub Actions runs the API suite, browser module syntax checks and frontend helper/API tests on every push and pull request.
-
-## Security and privacy
-
-StudentOS is a portfolio **MVP** with local accounts and a disposable public demo. Passwords use salted PBKDF2-HMAC-SHA256 hashes; random session tokens are stored as SHA-256 hashes and expire in seven days; SQL queries use bound parameters; and users cannot edit other users' records.
-
-**Before offering persistent public accounts**, add rate limiting, account recovery, session management controls, logging/monitoring and durable database storage; serve the application over HTTPS. Registration is available in local mode and disabled in the public portfolio demo.
-
-## Roadmap
-
-- [x] Dark responsive UI
-- [x] User registration and login
-- [x] Persistent SQLite database
-- [x] Course and task CRUD
-- [x] GPA estimate
-- [x] Weekly timetable
-- [x] API tests and GitHub Actions CI
-- [ ] Add weighted assignments and configurable university grade scales
-- [ ] Calendar sync and notifications
-- [x] Render Blueprint for a disposable public demo
-- [ ] Add automated deployment smoke checks
-- [ ] Accessibility and end-to-end browser tests in CI
-
----
-
-Made as a full-stack software engineering portfolio project. Built to be understandable, extensible, and genuinely useful.
+Новые модули `dist/campaign.js` и `dist/touch.js` содержат правила этажей и обработку независимых касаний. Проверки `tests/campaign.test.mjs` и `tests/touch.test.mjs` охватывают переходы, требования задач, миграцию сохранений и владение указателями.

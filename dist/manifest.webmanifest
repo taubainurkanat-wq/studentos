@@ -1,0 +1,16 @@
+{
+  "id": "./",
+  "name": "Этаж 13 — После отбоя",
+  "short_name": "Этаж 13",
+  "lang": "ru",
+  "description": "Атмосферный хоррор от первого лица для телефона и ПК.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0b110e",
+  "theme_color": "#111614",
+  "icons": [
+    { "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

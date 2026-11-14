@@ -1,0 +1,313 @@
+/* A thumb-sized control layout with a free left movement zone. */
+:root {
+  --control-scale: 1.15;
+}
+#touchJournalTop {
+  display: none;
+}
+#floorBadge {
+  position: absolute;
+  left: 50%;
+  top: 28px;
+  transform: translateX(-50%);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: #adb99e;
+}
+#escapeTimer {
+  position: absolute;
+  left: 50%;
+  top: 90px;
+  transform: translateX(-50%);
+  font: 12px monospace;
+  color: #f0c185;
+  background: #1d2116c9;
+  border: 1px solid #8d84634d;
+  padding: 10px 15px;
+}
+.chapter-card {
+  display: block;
+  width: 100%;
+  margin-bottom: 9px;
+  line-height: 1.5;
+}
+.chapter-card:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.journal-detail {
+  color: #e0c89a;
+  padding: 0 0 12px 14px;
+  border-left: 1px solid #85744d;
+  white-space: pre-line;
+}
+body.touch #touchJournalTop {
+  display: block;
+  order: 3;
+}
+body.touch .objective {
+  flex: 1;
+}
+body.touch .hud-top {
+  gap: 10px;
+}
+body.touch #floorBadge {
+  top: auto;
+  bottom: 16px;
+  font-size: 9px;
+}
+body.touch #joystick {
+  pointer-events: none;
+  width: 130px;
+  height: 130px;
+  left: max(42px, env(safe-area-inset-left));
+  bottom: 80px;
+  opacity: 0.55;
+  transition: opacity 0.1s;
+}
+body.touch #joystick.engaged {
+  opacity: 1;
+  bottom: auto;
+  transition: none;
+}
+body.touch #stick {
+  left: 43px;
+  top: 43px;
+  width: 44px;
+  height: 44px;
+  background: #d0dfb942;
+}
+body.touch .touch-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, calc(58px * var(--control-scale)));
+  gap: 13px;
+  right: max(24px, calc(env(safe-area-inset-right) + 12px));
+  bottom: max(82px, calc(env(safe-area-inset-bottom) + 65px));
+}
+body.touch .touch-buttons button {
+  width: calc(58px * var(--control-scale));
+  height: calc(58px * var(--control-scale));
+  font-size: 25px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+body.touch .touch-buttons small {
+  font-size: 10px;
+  margin-top: 3px;
+}
+body.touch #touchInteract {
+  grid-column: 2;
+  grid-row: 1/3;
+  width: calc(68px * var(--control-scale));
+  height: calc(68px * var(--control-scale));
+  align-self: center;
+}
+body.touch #touchRun {
+  grid-column: 1;
+  grid-row: 3;
+}
+body.touch #touchRun.active {
+  background: #63563bd9;
+  border-color: #d8b477;
+}
+body.touch #touchJournal {
+  display: none;
+}
+body.touch #touchCrouch {
+  grid-column: 1;
+  grid-row: 2;
+}
+body.touch #touchLight {
+  grid-column: 1;
+  grid-row: 1;
+}
+body.touch #touchInteract.available {
+  background: #6b573bbf;
+  box-shadow: 0 0 28px #be9d5340;
+}
+body.touch #interaction {
+  top: 49%;
+  font-size: 12px;
+  white-space: normal;
+  text-align: center;
+  width: 60%;
+  line-height: 1.4;
+}
+body.touch #subtitle {
+  bottom: 32%;
+  left: 23%;
+  right: 23%;
+  font-size: 12px;
+}
+body.touch #lookHint {
+  right: 25px;
+  bottom: calc(280px * var(--control-scale));
+  font-size: 9px;
+}
+body.touch #inventory {
+  position: absolute;
+  left: 0;
+  bottom: 36px;
+  max-width: 65%;
+  justify-content: flex-start;
+}
+body.touch #inventory span {
+  padding: 6px;
+  font-size: 7px;
+}
+body.touch .meters {
+  width: 120px;
+}
+body.touch .menu-actions {
+  width: 245px;
+  gap: 7px;
+}
+body.touch .menu-actions .text-button {
+  padding: 8px 0;
+}
+body.touch .menu .door-caption {
+  display: none;
+}
+body.touch .icon-button {
+  min-width: 48px;
+  width: 48px;
+  height: 48px;
+}
+body.touch .menu-content h1 {
+  font-size: clamp(62px, 16vw, 96px);
+}
+@media (orientation: portrait) {
+  body.touch .menu {
+    padding-top: max(28px, env(safe-area-inset-top));
+    padding-bottom: max(22px, env(safe-area-inset-bottom));
+  }
+  body.touch .menu-content {
+    margin-top: 15px;
+  }
+  body.touch .hud-top {
+    top: max(18px, env(safe-area-inset-top));
+  }
+  body.touch .objective strong {
+    max-width: 220px;
+  }
+  body.touch .objective .overline {
+    line-height: 1.5;
+  }
+  body.touch #subtitle {
+    bottom: 41%;
+    left: 10%;
+    right: 10%;
+  }
+  body.touch #lookHint {
+    right: 20px;
+    bottom: 48%;
+  }
+  body.touch #interaction {
+    top: 44%;
+    width: 80%;
+  }
+  body.touch #floorBadge {
+    bottom: max(15px, env(safe-area-inset-bottom));
+  }
+  body.touch .touch-buttons {
+    bottom: max(100px, calc(env(safe-area-inset-bottom) + 65px));
+    right: 24px;
+  }
+  body.touch #joystick {
+    left: 25px;
+    bottom: 120px;
+  }
+  body.touch #escapeTimer {
+    top: 110px;
+  }
+}
+@media (max-height: 520px) {
+  body.touch .menu {
+    padding-top: 14px;
+    padding-bottom: 12px;
+  }
+  body.touch .menu-content {
+    padding: 8px 0;
+  }
+  body.touch .menu-content h1 {
+    font-size: 56px;
+    margin-bottom: 8px;
+  }
+  body.touch .tagline {
+    margin-bottom: 12px;
+  }
+  body.touch .menu-content .overline {
+    margin-bottom: 6px;
+  }
+  body.touch .menu-actions {
+    width: 240px;
+    gap: 5px;
+  }
+  body.touch .menu-actions .primary,
+  body.touch .menu-actions .secondary {
+    min-height: 32px;
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+  body.touch .menu-actions .text-button {
+    padding: 5px 0;
+  }
+  body.touch .touch-buttons {
+    grid-template-columns: repeat(2, calc(49px * var(--control-scale)));
+    bottom: 53px;
+    gap: 8px;
+  }
+  body.touch .touch-buttons button {
+    width: calc(49px * var(--control-scale));
+    height: calc(49px * var(--control-scale));
+  }
+  body.touch #touchInteract {
+    width: calc(60px * var(--control-scale));
+    height: calc(60px * var(--control-scale));
+  }
+  body.touch #joystick {
+    bottom: 65px;
+    width: 130px;
+    height: 130px;
+  }
+  body.touch #lookHint {
+    display: none;
+  }
+  body.touch #subtitle {
+    bottom: 25%;
+    left: 25%;
+    right: 25%;
+    font-size: 11px;
+  }
+  body.touch #interaction {
+    top: 50%;
+    width: 45%;
+  }
+  body.touch #inventory {
+    bottom: 32px;
+  }
+  body.touch #escapeTimer {
+    top: 65px;
+  }
+}
+
+body.touch #inventory {
+  position: fixed;
+  left: max(18px, env(safe-area-inset-left));
+  top: 78px;
+  bottom: auto;
+  max-width: 60%;
+}
+body.touch #lookHint {
+  display: none;
+}
+@media (orientation: portrait) {
+  body.touch #inventory {
+    top: 100px;
+  }
+}
+@media (max-height: 520px) {
+  body.touch #inventory {
+    top: 65px;
+  }
+}
